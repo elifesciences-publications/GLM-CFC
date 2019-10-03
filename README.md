@@ -2,13 +2,14 @@
 A GLM based approach to assess CFC.
 
 Code to measure cross-frequency coupling between two signals as described in this manuscript: 
+
 [A statistical framework to assess cross-frequency coupling while accounting for confounding analysis effects](https://www.biorxiv.org/content/10.1101/519470v2), J. Nadalin, L-E Martinet, E. Blackwood, M-S Lo, A. S. Widge, S. S. Cash, U. T. Eden, M. A. Kramer, 2019.
 
 `ExampleCode.m`: Run the cells in this file to produce example voltage traces and surfaces in (Phi_low, A_low, A_high)-space (as in Figure 4 of the manuscript). Four simulations are present: (i) no CFC, (ii) PAC only, (iii) AAC only, and (iv) both PAC and AAC.
 
-`simfun.m` : Code to simulate signals V_low, V_high, with induced cross-frequency coupling and measure output statistics R_PAC, R_AAC, and R_CFC, along with confidence intervals and p-values
+`simfun.m`: Code to simulate signals V_low, V_high, with induced cross-frequency coupling and measure output statistics R_PAC and R_AAC along with confidence intervals and p-values.
 
-`glmfun.m`: Code to evaluate the coupling statistics R_PAC, R_AAC, and R_CFC, along with confidence intervals and p-values, between two signals.
+`glmfun.m`: Code to evaluate the coupling statistics R_PAC and R_AAC, along with confidence intervals and p-values, between two signals.
 
 `glmfun_with_indicator.m`: Cn example of how to update glmfun to test for effect of condition (e.g. pre and post stimuli) on coupling
 
