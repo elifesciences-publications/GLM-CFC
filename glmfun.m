@@ -149,15 +149,28 @@ function [XX,P] = glmfun(Vlo, Vhi,pval,ci,AIC,varargin)
         M = 10000;
         bMC = b2*ones(1,M) + sqrtm(stats2.covb)*normrnd(0,1,2,M);
         splineMC = glmval(bMC,X2eval,'log',stats2,'constant', 'off');
-        splineAAC = splineMC;
+        splineAAC_phi = splineMC;
+        %Phi_low model at fixed A_low
+        M = 10000;
+        bMC = b1*ones(1,M) + sqrtm(stats1.covb)*normrnd(0,1,nCtlPts,M);
+        splinePAC_a = glmval(bMC,X0,'log',stats1,'constant', 'off');
+        %Phi_low model at fixed Phi_low
+        X0_eval_fixed_Phi = spline_phase0(phiLOW*ones(size(phi0)),nCtlPts);
+        bMC = b1*ones(1,M) + sqrtm(stats1.covb)*normrnd(0,1,nCtlPts,M);
+        splinePAC_phi = glmval(bMC,X0_eval_fixed_Phi,'log',stats1,'constant', 'off');
       
-        mx = zeros(M,1);
+        mx_pac = zeros(M,1); mx_aac = zeros(M,1);
         for k = 1:M
           m_a = max(abs(1-splineAAC_a(:,k)./spline_a(:,k))); %fixed A
-          m_phi = max(abs(1-splineAAC(:,k)./spline_phi(:,k))); %fixed Phi
-          mx(k) = max(m_a,m_phi);
+          m_phi = max(abs(1-splineAAC_phi(:,k)./spline_phi(:,k))); %fixed Phi
+          mx_pac(k) = max(m_a,m_phi);
+          
+          m_a = max(abs(1-splinePAC_a(:,k)./spline_a(:,k))); %fixed A
+          m_phi = max(abs(1-splinePAC_phi(:,k)./spline_phi(:,k))); %fixed Phi
+          mx_aac(k) = max(m_a,m_phi);
         end
-        XX.rpac_ci = quantile(mx,[0.025,0.975]);
+        XX.rpac_ci = quantile(mx_pac,[0.025,0.975]);
+        XX.raac_ci = quantile(mx_aac,[0.025,0.975]);
   end
 
 end
